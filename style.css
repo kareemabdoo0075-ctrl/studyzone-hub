@@ -64,7 +64,25 @@ body {
 }
 
 /* مؤقت البومودورو */
-.timer-card {
+.timer-card { text-align: center; }
+
+.time-input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #a0aec0;
+    margin-bottom: 10px;
+}
+
+.time-input-group input {
+    width: 60px;
+    background: #202538;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 5px;
+    border-radius: 6px;
     text-align: center;
 }
 
@@ -110,7 +128,7 @@ body {
     color: #a0aec0;
 }
 
-.sound-controls select {
+.sound-controls select, .calc-mode-selector select {
     width: 100%;
     margin-top: 8px;
     padding: 8px;
@@ -184,14 +202,16 @@ body {
     font-size: 16px;
 }
 
-/* حاسبة الدرجات */
-.calc-inputs {
+/* حاسبة الدرجات والمواد */
+.calc-mode-selector { margin-bottom: 15px; font-size: 13px; color: #a0aec0; }
+
+.calc-inputs, .subject-count-box {
     display: flex;
     gap: 10px;
     margin-bottom: 12px;
 }
 
-.calc-inputs input {
+.calc-inputs input, .subject-count-box input, .subject-row input {
     flex: 1;
     background: #202538;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -202,10 +222,28 @@ body {
     font-size: 13px;
 }
 
-.calc-btn {
-    width: 100%;
-    margin-bottom: 10px;
+.subjects-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 180px;
+    overflow-y: auto;
+    margin-bottom: 12px;
 }
+
+.subject-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.subject-row span {
+    font-size: 12px;
+    color: #a0aec0;
+    width: 50px;
+}
+
+.calc-btn { width: 100%; margin-bottom: 10px; }
 
 .calc-result {
     text-align: center;
@@ -216,7 +254,7 @@ body {
     border-radius: 8px;
 }
 
-/* المكتبة والمصادر */
+/* المصادر */
 .resources-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -233,15 +271,9 @@ body {
     font-weight: 500;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: 0.2s;
 }
 
-.resource-btn:hover {
-    background: #2d3748;
-    color: #4da6ff;
-}
-
-/* الشاشة الكاملة لمؤقت البومودورو */
+/* الشاشة الكاملة للمؤقت */
 .timer-card:fullscreen {
     display: flex;
     flex-direction: column;
@@ -250,7 +282,4 @@ body {
     background: #0f111a;
     padding: 40px;
 }
-
-.timer-card:fullscreen .timer-display {
-    font-size: 120px;
-}
+.timer-card:fullscreen .timer-display { font-size: 120px; }
