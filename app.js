@@ -109,6 +109,42 @@ function saveNotes() {
     localStorage.setItem('study_notes', notesArea.value);
 }
 
-// تشغيل الأرقام الابتدائية
-saveAndRenderTodos();
+// --- 6. حاسبة النسبة المئوية والتقييم ---
+function calculatePercentage() {
+    const score = parseFloat(document.getElementById('userScore').value);
+    const total = parseFloat(document.getElementById('totalScore').value);
+    const resultBox = document.getElementById('calcResult');
 
+    if (isNaN(score) || isNaN(total) || total <= 0 || score < 0) {
+        resultBox.innerText = 'يرجى إدخال أرقام صحيحة!';
+        resultBox.style.color = '#ff6384';
+        return;
+    }
+
+    const percentage = ((score / total) * 100).toFixed(1);
+    let grade = '';
+
+    if (percentage >= 85) grade = 'ممتاز 🌟';
+    else if (percentage >= 75) grade = 'جيد جداً 👍';
+    else if (percentage >= 65) grade = 'جيد 👌';
+    else if (percentage >= 50) grade = 'مقبول 📝';
+    else grade = 'يحتاج إلى تحسين 💪';
+
+    resultBox.innerText = `النسبة: ${percentage}% (${grade})`;
+    resultBox.style.color = '#4da6ff';
+}
+
+// --- 7. وضع الشاشة الكاملة للمؤقت ---
+function toggleFullscreen() {
+    const timerCard = document.querySelector('.timer-card');
+    if (!document.fullscreenElement) {
+        timerCard.requestFullscreen().catch(err => {
+            alert(`خطأ في تفعيل الشاشة الكاملة: ${err.message}`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+// تشغيل القوائم عند التحميل
+saveAndRenderTodos();
