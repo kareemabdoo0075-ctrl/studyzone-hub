@@ -1,1 +1,210 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background: #0f111a;
+    color: #e1e7ec;
+    min-height: 100vh;
+    padding-bottom: 30px;
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 6%;
+    background: #161925;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: #4da6ff;
+}
+
+.clock-box {
+    background: #202538;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #a0aec0;
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    padding: 25px 6%;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card {
+    background: #161925;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.card h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #cbd5e0;
+}
+
+/* مؤقت البومودورو */
+.timer-card {
+    text-align: center;
+}
+
+.timer-display {
+    font-size: 52px;
+    font-weight: 800;
+    color: #4da6ff;
+    margin: 10px 0;
+    letter-spacing: 2px;
+}
+
+.timer-status {
+    font-size: 13px;
+    color: #a0aec0;
+    margin-bottom: 18px;
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 8px 18px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-primary { background: #4da6ff; color: #000; }
+.btn-secondary { background: #2d3748; color: #fff; }
+.btn-reset { background: rgba(255, 99, 132, 0.2); color: #ff6384; }
+
+.sound-controls {
+    text-align: right;
+    font-size: 13px;
+    color: #a0aec0;
+}
+
+.sound-controls select {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px;
+    background: #202538;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    outline: none;
+}
+
+/* الملاحظات السريعة */
+.notes-card textarea {
+    width: 100%;
+    height: 120px;
+    background: #202538;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+    color: #fff;
+    font-size: 13px;
+    resize: none;
+    outline: none;
+}
+
+/* قائمة المهام */
+.todo-input-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.todo-input-box input {
+    flex: 1;
+    background: #202538;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: #fff;
+    outline: none;
+}
+
+.todo-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.todo-item {
+    background: #202538;
+    padding: 10px 14px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.todo-item.completed span {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #ff6384;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* المكتبة والمصادر */
+.resources-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.resource-btn {
+    background: #202538;
+    color: #cbd5e0;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: 0.2s;
+}
+
+.resource-btn:hover {
+    background: #2d3748;
+    color: #4da6ff;
+}
 
