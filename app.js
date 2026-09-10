@@ -1,16 +1,24 @@
 // --- 1. الساعة الحية ---
 function updateClock() {
     const now = new Date();
-    const timeString = now.toLocaleTimeString('ar-EG');
-    document.getElementById('liveClock').innerText = timeString;
+    document.getElementById('liveClock').innerText = now.toLocaleTimeString('ar-EG');
 }
 setInterval(updateClock, 1000);
 updateClock();
 
-// --- 2. مؤقت البومودورو ---
+// --- 2. مؤقت التركيز والتعديل عليه ---
 let timer;
-let timeLeft = 25 * 60; // 25 دقيقة
+let timeLeft = 25 * 60;
 let isRunning = false;
+
+function setCustomTime() {
+    const mins = parseInt(document.getElementById('customMinutes').value);
+    if (mins > 0) {
+        pauseTimer();
+        timeLeft = mins * 60;
+        updateTimerDisplay();
+    }
+}
 
 function updateTimerDisplay() {
     const minutes = Math.floor(timeLeft / 60);
@@ -29,10 +37,8 @@ function startTimer() {
         } else {
             clearInterval(timer);
             isRunning = false;
-            alert('انتهى وقت التركيز! خذ استراحة لمدة 5 دقائق ☕');
-            timeLeft = 5 * 60;
+            alert('انتهى وقت التركيز! خذ استراحة ☕');
             document.getElementById('timerStatus').innerText = 'وقت الاستراحة ☕';
-            updateTimerDisplay();
         }
     }, 1000);
 }
@@ -43,33 +49,36 @@ function pauseTimer() {
 }
 
 function resetTimer() {
-    clearInterval(timer);
-    isRunning = false;
-    timeLeft = 25 * 60;
+    pauseTimer();
+    setCustomTime();
     document.getElementById('timerStatus').innerText = 'وقت المذاكرة والتركيز 🧠';
-    updateTimerDisplay();
 }
 
-// --- 3. الأصوات الصوتية للتركيز ---
+// --- 3. الأصوات الصوتية المعدلة ---
 function toggleSound(soundType) {
-    const rain = document.getElementById('audioRain');
-    const waves = document.getElementById('audioWaves');
+    const sounds = ['audioRain', 'audioWaves', 'audioForest', 'audioWhite'];
     
-    rain.pause();
-    waves.pause();
+    sounds.forEach(id => {
+        const audio = document.getElementById(id);
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    });
 
-    if (soundType === 'rain') rain.play();
-    if (soundType === 'waves') waves.play();
+    if (soundType === 'rain') document.getElementById('audioRain').play();
+    if (soundType === 'waves') document.getElementById('audioWaves').play();
+    if (soundType === 'forest') document.getElementById('audioForest').play();
+    if (soundType === 'white') document.getElementById('audioWhite').play();
 }
 
-// --- 4. إدارة المهام (To-Do List) مع الحفظ التلقائي ---
+// --- 4. المهام والملاحظات ---
 let todos = JSON.parse(localStorage.getItem('study_todos')) || [];
 
 function saveAndRenderTodos() {
     localStorage.setItem('study_todos', JSON.stringify(todos));
     const todoList = document.getElementById('todoList');
     todoList.innerHTML = '';
-
     todos.forEach((todo, index) => {
         const li = document.createElement('li');
         li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
@@ -83,47 +92,78 @@ function saveAndRenderTodos() {
 
 function addTodo() {
     const input = document.getElementById('todoInput');
-    const text = input.value.trim();
-    if (text) {
-        todos.push({ text: text, completed: false });
+    if (input.value.trim()) {
+        todos.push({ text: input.value.trim(), completed: false });
         input.value = '';
         saveAndRenderTodos();
     }
 }
+function toggleTodo(index) { todos[index].completed = !todos[index].completed; saveAndRenderTodos(); }
+function deleteTodo(index) { todos.splice(index, 1); saveAndRenderTodos(); }
 
-function toggleTodo(index) {
-    todos[index].completed = !todos[index].completed;
-    saveAndRenderTodos();
-}
-
-function deleteTodo(index) {
-    todos.splice(index, 1);
-    saveAndRenderTodos();
-}
-
-// --- 5. الملاحظات السريعة مع الحفظ التلقائي ---
 const notesArea = document.getElementById('quickNotes');
 notesArea.value = localStorage.getItem('study_notes') || '';
+function saveNotes() { localStorage.setItem('study_notes', notesArea.value); }
 
-function saveNotes() {
-    localStorage.setItem('study_notes', notesArea.value);
+// --- 5. حاسبة النسبة (مادة واحدة / عدة مواد) ---
+function changeCalcMode(mode) {
+    if (mode === 'single') {
+        document.getElementById('singleCalcBox').style.display = 'block';
+        document.getElementById('multiCalcBox').style.display = 'none';
+    } else {
+        document.getElementById('singleCalcBox').style.display = 'none';
+        document.getElementById('multiCalcBox').style.display = 'block';
+    }
 }
 
-// --- 6. حاسبة النسبة المئوية والتقييم ---
-function calculatePercentage() {
-    const score = parseFloat(document.getElementById('userScore').value);
-    const total = parseFloat(document.getElementById('totalScore').value);
-    const resultBox = document.getElementById('calcResult');
+function generateSubjectInputs() {
+    const count = parseInt(document.getElementById('subjectsCount').value);
+    const container = document.getElementById('subjectsContainer');
+    container.innerHTML = '';
 
-    if (isNaN(score) || isNaN(total) || total <= 0 || score < 0) {
-        resultBox.innerText = 'يرجى إدخال أرقام صحيحة!';
+    if (count > 0 && count <= 15) {
+        for (let i = 1; i <= count; i++) {
+            const div = document.createElement('div');
+            div.className = 'subject-row';
+            div.innerHTML = `
+                <span>مادة ${i}:</span>
+                <input type="number" class="sub-score" placeholder="الدرجة">
+                <input type="number" class="sub-total" placeholder="الدرجة النهائية">
+            `;
+            container.appendChild(div);
+        }
+    }
+}
+
+function calculatePercentage() {
+    const mode = document.getElementById('calcMode').value;
+    const resultBox = document.getElementById('calcResult');
+    let totalScore = 0;
+    let userScore = 0;
+
+    if (mode === 'single') {
+        userScore = parseFloat(document.getElementById('userScore').value);
+        totalScore = parseFloat(document.getElementById('totalScore').value);
+    } else {
+        const scores = document.querySelectorAll('.sub-score');
+        const totals = document.querySelectorAll('.sub-total');
+
+        scores.forEach((input, i) => {
+            const val = parseFloat(input.value) || 0;
+            const tot = parseFloat(totals[i].value) || 0;
+            userScore += val;
+            totalScore += tot;
+        });
+    }
+
+    if (isNaN(userScore) || isNaN(totalScore) || totalScore <= 0) {
+        resultBox.innerText = 'يرجى إدخال الدرجات بشكل صحيح!';
         resultBox.style.color = '#ff6384';
         return;
     }
 
-    const percentage = ((score / total) * 100).toFixed(1);
+    const percentage = ((userScore / totalScore) * 100).toFixed(1);
     let grade = '';
-
     if (percentage >= 85) grade = 'ممتاز 🌟';
     else if (percentage >= 75) grade = 'جيد جداً 👍';
     else if (percentage >= 65) grade = 'جيد 👌';
@@ -134,17 +174,13 @@ function calculatePercentage() {
     resultBox.style.color = '#4da6ff';
 }
 
-// --- 7. وضع الشاشة الكاملة للمؤقت ---
 function toggleFullscreen() {
     const timerCard = document.querySelector('.timer-card');
     if (!document.fullscreenElement) {
-        timerCard.requestFullscreen().catch(err => {
-            alert(`خطأ في تفعيل الشاشة الكاملة: ${err.message}`);
-        });
+        timerCard.requestFullscreen().catch(err => alert(err.message));
     } else {
         document.exitFullscreen();
     }
 }
 
-// تشغيل القوائم عند التحميل
 saveAndRenderTodos();
