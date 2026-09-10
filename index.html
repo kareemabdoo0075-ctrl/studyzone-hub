@@ -1,1 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyZone Hub - منصة الطالب الذكية</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- الشريط العلوي -->
+    <header class="app-header">
+        <div class="logo">🎓 StudyZone</div>
+        <div class="clock-box" id="liveClock">00:00:00</div>
+    </header>
+
+    <main class="dashboard-container">
+
+        <!-- القسم الأيسر/الأول: مؤقت بومودورو والملاحظات -->
+        <div class="column">
+            
+            <!-- مؤقت التركيز -->
+            <section class="card timer-card">
+                <h2>⏱️ مؤقت التركيز (Pomodoro)</h2>
+                <div class="timer-display" id="timerDisplay">25:00</div>
+                <div class="timer-status" id="timerStatus">وقت المذاكرة والتركيز 🧠</div>
+                <div class="timer-controls">
+                    <button class="btn btn-primary" id="startBtn" onclick="startTimer()">بدء</button>
+                    <button class="btn btn-secondary" onclick="pauseTimer()">إيقاف</button>
+                    <button class="btn btn-reset" onclick="resetTimer()">إعادة ضبط</button>
+                </div>
+                <div class="sound-controls">
+                    <label>🔊 أصوات الخلفية للتركيز:</label>
+                    <select id="bgSoundSelect" onchange="toggleSound(this.value)">
+                        <option value="none">بدون صوت</option>
+                        <option value="rain">صوت المطر 🌧️</option>
+                        <option value="waves">أمواج البحر 🌊</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- الملاحظات السريعة -->
+            <section class="card notes-card">
+                <h2>📝 ملاحظات سريعة</h2>
+                <textarea id="quickNotes" placeholder="اكتب ملاحظاتك أو أفكارك السريعة هنا... (تحفظ تلقائياً)" oninput="saveNotes()"></textarea>
+            </section>
+
+        </div>
+
+        <!-- القسم الأيمن/الثاني: قائمة المهام والمكتبة -->
+        <div class="column">
+            
+            <!-- جدول المهام والدروس -->
+            <section class="card todo-card">
+                <h2>✅ قائمة المهام والدروس</h2>
+                <div class="todo-input-box">
+                    <input type="text" id="todoInput" placeholder="أضف درس أو مهمة جديدة...">
+                    <button class="btn btn-primary" onclick="addTodo()">إضافة</button>
+                </div>
+                <ul class="todo-list" id="todoList">
+                    <!-- تظهر المهام هنا برمجياً -->
+                </ul>
+            </section>
+
+            <!-- مكتبة المواد والمصادر -->
+            <section class="card resources-card">
+                <h2>📚 مصادر وكورسات مختارة</h2>
+                <div class="resources-grid">
+                    <a href="https://www.youtube.com" target="_blank" class="resource-btn">
+                        <span>▶️ يوتيوب التعليمي</span>
+                    </a>
+                    <a href="https://www.google.com" target="_blank" class="resource-btn">
+                        <span>🔍 محرك البحث</span>
+                    </a>
+                    <a href="https://chat.openai.com" target="_blank" class="resource-btn">
+                        <span>🤖 مساعد الذكاء الاصطناعي</span>
+                    </a>
+                    <a href="https://drive.google.com" target="_blank" class="resource-btn">
+                        <span>📁 ملخصاتي على Drive</span>
+                    </a>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- عناصر الصوتية خلف الكواليس -->
+    <audio id="audioRain" loop src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg"></audio>
+    <audio id="audioWaves" loop src="https://actions.google.com/sounds/v1/water/ocean_waves_into_cave.ogg"></audio>
+
+    <script src="app.js"></script>
+</body>
+</html>
 
