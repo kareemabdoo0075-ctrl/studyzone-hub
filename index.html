@@ -8,7 +8,6 @@
 </head>
 <body>
 
-    <!-- الشريط العلوي -->
     <header class="app-header">
         <div class="logo">🎓 StudyZone</div>
         <div class="clock-box" id="liveClock">00:00:00</div>
@@ -16,12 +15,19 @@
 
     <main class="dashboard-container">
 
-        <!-- القسم الأيسر: مؤقت بومودورو والملاحظات -->
         <div class="column">
             
-            <!-- مؤقت التركيز -->
+            <!-- مؤقت التركيز المعدل -->
             <section class="card timer-card">
                 <h2>⏱️ مؤقت التركيز (Pomodoro)</h2>
+                
+                <!-- إمكانية تحديد الوقت -->
+                <div class="time-input-group">
+                    <label>حدد مدة المذاكرة (بالدقائق):</label>
+                    <input type="number" id="customMinutes" value="25" min="1" max="180">
+                    <button class="btn btn-secondary" onclick="setCustomTime()">تطبيق</button>
+                </div>
+
                 <div class="timer-display" id="timerDisplay">25:00</div>
                 <div class="timer-status" id="timerStatus">وقت المذاكرة والتركيز 🧠</div>
                 <div class="timer-controls">
@@ -30,12 +36,16 @@
                     <button class="btn btn-reset" onclick="resetTimer()">إعادة ضبط</button>
                     <button class="btn btn-secondary" onclick="toggleFullscreen()">🖥️ الشاشة كاملة</button>
                 </div>
+
+                <!-- قائمة أصوات محسنة ومكتملة -->
                 <div class="sound-controls">
                     <label>🔊 أصوات الخلفية للتركيز:</label>
                     <select id="bgSoundSelect" onchange="toggleSound(this.value)">
                         <option value="none">بدون صوت</option>
                         <option value="rain">صوت المطر 🌧️</option>
                         <option value="waves">أمواج البحر 🌊</option>
+                        <option value="forest">أصوات الطبيعة والغابة 🌲</option>
+                        <option value="white">ضوضاء بيضاء (التركيز العالي) 🎧</option>
                     </select>
                 </div>
             </section>
@@ -48,48 +58,59 @@
 
         </div>
 
-        <!-- القسم الأيمن: قائمة المهام والمكتبة والحاسبة -->
         <div class="column">
             
-            <!-- جدول المهام والدروس -->
+            <!-- جدول المهام -->
             <section class="card todo-card">
                 <h2>✅ قائمة المهام والدروس</h2>
                 <div class="todo-input-box">
                     <input type="text" id="todoInput" placeholder="أضف درس أو مهمة جديدة...">
                     <button class="btn btn-primary" onclick="addTodo()">إضافة</button>
                 </div>
-                <ul class="todo-list" id="todoList">
-                    <!-- تظهر المهام هنا برمجياً -->
-                </ul>
+                <ul class="todo-list" id="todoList"></ul>
             </section>
 
-            <!-- حاسبة الدرجات والنسبة المئوية -->
+            <!-- حاسبة الدرجات المعدلة (مادة أو عدة مواد) -->
             <section class="card calc-card">
-                <h2>📊 حاسبة النسبة المئوية</h2>
-                <div class="calc-inputs">
-                    <input type="number" id="userScore" placeholder="درجتك (مثلاً 280)">
-                    <input type="number" id="totalScore" placeholder="المجموع الكلي (مثلاً 300)">
+                <h2>📊 حاسبة الدرجات والنسبة</h2>
+                
+                <div class="calc-mode-selector">
+                    <label>طريقة الحساب:</label>
+                    <select id="calcMode" onchange="changeCalcMode(this.value)">
+                        <option value="single">مادة واحدة</option>
+                        <option value="multiple">عدة مواد</option>
+                    </select>
                 </div>
+
+                <!-- حساب مادة واحدة -->
+                <div id="singleCalcBox">
+                    <div class="calc-inputs">
+                        <input type="number" id="userScore" placeholder="درجتك (مثلاً 280)">
+                        <input type="number" id="totalScore" placeholder="المجموع الكلي (مثلاً 300)">
+                    </div>
+                </div>
+
+                <!-- حساب عدة مواد -->
+                <div id="multiCalcBox" style="display: none;">
+                    <div class="subject-count-box">
+                        <input type="number" id="subjectsCount" placeholder="عدد المواد (مثلاً 5)" min="1" max="15">
+                        <button class="btn btn-secondary" onclick="generateSubjectInputs()">إنشاء المربعات</button>
+                    </div>
+                    <div id="subjectsContainer" class="subjects-container"></div>
+                </div>
+
                 <button class="btn btn-primary calc-btn" onclick="calculatePercentage()">حساب النسبة</button>
                 <div class="calc-result" id="calcResult">---</div>
             </section>
 
-            <!-- مكتبة المواد والمصادر -->
+            <!-- مكتبة المصادر -->
             <section class="card resources-card">
                 <h2>📚 مصادر وكورسات مختارة</h2>
                 <div class="resources-grid">
-                    <a href="https://www.youtube.com" target="_blank" class="resource-btn">
-                        <span>▶️ يوتيوب التعليمي</span>
-                    </a>
-                    <a href="https://www.google.com" target="_blank" class="resource-btn">
-                        <span>🔍 محرك البحث</span>
-                    </a>
-                    <a href="https://chat.openai.com" target="_blank" class="resource-btn">
-                        <span>🤖 مساعد الذكاء الاصطناعي</span>
-                    </a>
-                    <a href="https://drive.google.com" target="_blank" class="resource-btn">
-                        <span>📁 ملخصاتي على Drive</span>
-                    </a>
+                    <a href="https://www.youtube.com" target="_blank" class="resource-btn">▶️ يوتيوب التعليمي</a>
+                    <a href="https://www.google.com" target="_blank" class="resource-btn">🔍 محرك البحث</a>
+                    <a href="https://chat.openai.com" target="_blank" class="resource-btn">🤖 مساعد الذكاء الاصطناعي</a>
+                    <a href="https://drive.google.com" target="_blank" class="resource-btn">📁 ملخصاتي على Drive</a>
                 </div>
             </section>
 
@@ -97,9 +118,11 @@
 
     </main>
 
-    <!-- عناصر الصوتية خلف الكواليس -->
-    <audio id="audioRain" loop src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg"></audio>
-    <audio id="audioWaves" loop src="https://actions.google.com/sounds/v1/water/ocean_waves_into_cave.ogg"></audio>
+    <!-- روابط صوتية بديلة وموثوقة 100% -->
+    <audio id="audioRain" loop src="https://cdn.pixabay.com/download/audio/2022/05/16/audio_db6591201e.mp3"></audio>
+    <audio id="audioWaves" loop src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c330f658f8.mp3"></audio>
+    <audio id="audioForest" loop src="https://cdn.pixabay.com/download/audio/2021/09/06/audio_9ed1c0021f.mp3"></audio>
+    <audio id="audioWhite" loop src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c7283679.mp3"></audio>
 
     <script src="app.js"></script>
 </body>
