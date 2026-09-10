@@ -16,7 +16,7 @@
 
     <main class="dashboard-container">
 
-        <!-- القسم الأيسر/الأول: مؤقت بومودورو والملاحظات -->
+        <!-- القسم الأيسر: مؤقت بومودورو والملاحظات -->
         <div class="column">
             
             <!-- مؤقت التركيز -->
@@ -28,6 +28,7 @@
                     <button class="btn btn-primary" id="startBtn" onclick="startTimer()">بدء</button>
                     <button class="btn btn-secondary" onclick="pauseTimer()">إيقاف</button>
                     <button class="btn btn-reset" onclick="resetTimer()">إعادة ضبط</button>
+                    <button class="btn btn-secondary" onclick="toggleFullscreen()">🖥️ الشاشة كاملة</button>
                 </div>
                 <div class="sound-controls">
                     <label>🔊 أصوات الخلفية للتركيز:</label>
@@ -47,7 +48,7 @@
 
         </div>
 
-        <!-- القسم الأيمن/الثاني: قائمة المهام والمكتبة -->
+        <!-- القسم الأيمن: قائمة المهام والمكتبة والحاسبة -->
         <div class="column">
             
             <!-- جدول المهام والدروس -->
@@ -60,6 +61,17 @@
                 <ul class="todo-list" id="todoList">
                     <!-- تظهر المهام هنا برمجياً -->
                 </ul>
+            </section>
+
+            <!-- حاسبة الدرجات والنسبة المئوية -->
+            <section class="card calc-card">
+                <h2>📊 حاسبة النسبة المئوية</h2>
+                <div class="calc-inputs">
+                    <input type="number" id="userScore" placeholder="درجتك (مثلاً 280)">
+                    <input type="number" id="totalScore" placeholder="المجموع الكلي (مثلاً 300)">
+                </div>
+                <button class="btn btn-primary calc-btn" onclick="calculatePercentage()">حساب النسبة</button>
+                <div class="calc-result" id="calcResult">---</div>
             </section>
 
             <!-- مكتبة المواد والمصادر -->
@@ -92,4 +104,3 @@
     <script src="app.js"></script>
 </body>
 </html>
-
